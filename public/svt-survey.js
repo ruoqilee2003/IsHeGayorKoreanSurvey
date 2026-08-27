@@ -24,13 +24,23 @@ const FACTORS = [
     dKpop:"衍生創作與周邊產出豐富、社群討論熱絡，具備長期追溯與考證之條件", dOther:"衍生創作與周邊產出豐富、社群討論熱絡，具備長期追溯與考證之條件"}
 ];
 
-const D = { version:null, is_carat:false, skipped:false, q2b:[], fields:[], factors:[] };   // 作答資料
+const D = { version:null, is_carat:false, skipped:false, q2b:[], fields:[], factors:[], cp_orient:[] };   // 作答資料
 let step = 0;
 
 /* ============ 小工具 ============ */
 const $  = s => document.querySelector(s);
 const el = (h) => { const d=document.createElement("div"); d.innerHTML=h.trim(); return d.firstElementChild; };
 const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function withOtherInput(node, key, otherKey, selector){
+  const input = el(`<input type="text" style="margin-top:10px" class="${D[key]==="其他"?"":"hidden"}" value="${esc(D[otherKey]||"")}" placeholder="請說明">`);
+  node.appendChild(input);
+  node.querySelectorAll(selector).forEach(inp=>inp.addEventListener("change",()=>{
+    input.classList.toggle("hidden", D[key]!=="其他");
+  }));
+  input.addEventListener("input",e=>D[otherKey]=e.target.value);
+  return node;
+}
 
 function radio(key, label, hint, opts, required=true){
   const h = `<div class="q">
@@ -209,8 +219,32 @@ function renderDecline(){
 
 function pageAbout(s){
   head(s,"關於您","以下先透過幾道題項，瞭解您平時參與同人／追星社群之概況。");
+  const sexNode = radio("sex","請問您的生理性別：","",
+    ["生理男性","生理女性","其他","不便透露"]);
+  s.appendChild(withOtherInput(sexNode,"sex","sex_other",'input[name="sex"]'));
+
+  const orientNode = radio("orient","請問您的性取向：","",
+    ["直","絕望的直","雙","絕望的彎","彎","其他","不便透露"]);
+  s.appendChild(withOtherInput(orientNode,"orient","orient_other",'input[name="orient"]'));
+
   s.appendChild(radio("q1","您平常是否會關注、投入特定人物間的配對詮釋（即所謂「CP」文化）？","",
     ["是，此為我主要的興趣","偶爾涉獵，但參與程度不深","甚少涉及","完全不涉及"]));
+
+  const cpOrientNode = el(`<div class="q"><label class="q-label">請問您平時關注的角色戀愛性向關係？<span class="req">*</span></label>
+    <p class="q-hint">可複選。</p><div class="opts" id="cpOrient">
+    ${["BL","GL","BG","GB","其他"].map(o=>
+      `<label class="opt${(D.cp_orient||[]).includes(o)?" on":""}"><input type="checkbox" value="${esc(o)}"${(D.cp_orient||[]).includes(o)?" checked":""}><span>${esc(o)}</span></label>`).join("")}
+    </div>
+    <input type="text" id="cpOrientOther" style="margin-top:10px" class="${(D.cp_orient||[]).includes("其他")?"":"hidden"}" value="${esc(D.cp_orient_other||"")}" placeholder="請說明">
+    </div>`);
+  s.appendChild(cpOrientNode);
+  const cpOrientOtherInput = cpOrientNode.querySelector("#cpOrientOther");
+  cpOrientNode.querySelectorAll("#cpOrient input").forEach(inp=>inp.addEventListener("change",()=>{
+    D.cp_orient = [...cpOrientNode.querySelectorAll("#cpOrient input:checked")].map(x=>x.value);
+    inp.closest(".opt").classList.toggle("on",inp.checked);
+    cpOrientOtherInput.classList.toggle("hidden", !D.cp_orient.includes("其他"));
+  }));
+  cpOrientOtherInput.addEventListener("input",e=>D.cp_orient_other=e.target.value);
 
   const q2Node = radio("q2","您目前是否持續關注 KPOP 男性偶像團體？","",
     ["是，已持續關注三年以上","是，但關注時間尚短","曾經關注，目前已無","從未關注"]);
@@ -229,7 +263,11 @@ function pageAbout(s){
   s.appendChild(radio("q3","您對於韓國影視作品、綜藝節目或韓語之接觸程度為何？","",
     ["具備韓語能力，或長期接觸相關內容","有一定接觸，大致熟悉","幾乎未曾接觸"]));
 
-  nav(s,"下一頁",()=> ["q1","q2","q3"].every(k=>D[k]) || "尚有題項未完成作答。");
+  nav(s,"下一頁",()=>{
+    if(!["sex","orient","q1","q2","q3"].every(k=>D[k])) return "尚有題項未完成作答。";
+    if(!D.cp_orient || D.cp_orient.length===0) return "請至少選擇一項您平時關注的角色戀愛性向關係。";
+    return true;
+  });
 }
 
 function pageCP(s){
@@ -257,7 +295,7 @@ function pageCP(s){
   const cpHint = D.is_carat
     ? "可填寫多組配對；若您為 CARAT，請至少填寫一組隸屬 SEVENTEEN 團體內部之配對，以利本研究針對 SEVENTEEN 個案進行團體內部配對之深入分析。"
     : "可填寫多組配對。";
-  s.appendChild(el(`<div class="q"><label class="q-label">您目前最主要關注的配對為何？<span class="req">*</span></label>
+  s.appendChild(el(`<div class="q"><label class="q-label">您目前主要關注的配對為何？<span class="req">*</span></label>
     <p class="q-hint">${esc(cpHint)}</p>
     <input type="text" data-k="cp" value="${esc(D.cp||"")}" placeholder="例如：羅密歐x茱麗葉"></div>`));
   s.querySelector('[data-k="cp"]').addEventListener("input",e=>D.cp=e.target.value);
@@ -284,7 +322,7 @@ function pageCP(s){
 
   nav(s,"下一頁",()=>{
     if(!KPOP && (!D.fields||D.fields.length===0)) return "請至少選擇一個領域。";
-    if(!(D.cp||"").trim()) return "請填寫您目前最主要關注的配對。";
+    if(!(D.cp||"").trim()) return "請填寫您目前主要關注的配對。";
     if(D.factors.length===0) return "請至少選擇一項最吸引您的因素。";
     return true;
   });
