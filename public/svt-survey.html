@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Is he Gay or Korean？淺析KPOP男性偶像團體的RPS吸引力因子與解讀實踐——以SEVENTEEN為例</title>
+<style>
+:root{
+  --paper:#F5F0E4;
+  --paper-2:#FDFBF5;
+  --pink:#F4C6C4;
+  --pink-strong:#D98B8C;
+  --blue:#9FB3D6;
+  --blue-strong:#5F79AC;
+  --overlap:#A98AAE;
+  --ink:#332B34;
+  --muted:#867885;
+  --line:#EBDADB;
+  --shadow:0 1px 0 rgba(51,43,52,.06);
+  --tc:"PingFang TC","Noto Sans TC","Microsoft JhengHei","Heiti TC",sans-serif;
+  --lat:"Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,serif;
+  --mono:"SFMono-Regular",Menlo,Consolas,"DM Mono",monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--tc);
+  font-size:16px;
+  line-height:1.75;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+/* paper grain */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;
+  background-image:radial-gradient(circle at 1px 1px, rgba(169,138,174,.12) 1px, transparent 0);
+  background-size:4px 4px;
+}
+.wrap{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0 16px 64px}
+
+/* ---------- progress ---------- */
+.bar{position:sticky;top:0;z-index:20;background:var(--paper);padding:10px 0 8px;margin:0 -16px 20px;border-bottom:1px solid var(--line)}
+.bar-inner{max-width:520px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:10px}
+.track{flex:1;height:5px;background:var(--line);border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--pink-strong);transition:width .35s cubic-bezier(.2,.8,.2,1)}
+.step-n{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);white-space:nowrap}
+
+/* ---------- cover ---------- */
+.cover{padding:40px 0 8px}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--overlap);margin-bottom:18px;line-height:1.6}
+.title{font-family:var(--lat);font-size:clamp(20px,7.2vw,42px);line-height:1.15;font-weight:400;font-style:italic;letter-spacing:-.015em;margin:0;white-space:nowrap}
+.title .q{color:var(--pink-strong)}
+.sub{margin:18px 0 0;font-size:15px;color:var(--muted);line-height:1.85}
+.rule{height:1px;background:var(--line);margin:26px 0 22px}
+
+/* the × mark */
+.mark{display:block;font-family:var(--lat);font-size:56px;line-height:1;color:var(--blue-strong);opacity:.9;margin:0 0 6px}
+
+/* ---------- sections ---------- */
+h2.sec{font-size:19px;font-weight:700;letter-spacing:.01em;margin:0 0 6px}
+.sec-note{color:var(--muted);font-size:14px;margin:0 0 22px;line-height:1.8}
+.q{margin:0 0 26px}
+.q-label{font-size:16px;font-weight:600;line-height:1.7;margin:0 0 4px;display:block}
+.q-hint{font-size:13.5px;color:var(--muted);margin:0 0 12px;line-height:1.7}
+.req{color:var(--pink-strong);font-weight:700}
+
+/* ---------- info / consent text ---------- */
+.info-text p{margin:0 0 16px;font-size:14.5px;line-height:1.95;color:var(--ink)}
+.info-text p:last-of-type{margin-bottom:20px}
+.sig{font-size:14.5px;color:var(--muted);line-height:1.85;text-align:right;margin:0 0 26px}
+
+/* ---------- options ---------- */
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{
+  display:flex;gap:11px;align-items:flex-start;
+  border:1px solid var(--line);background:var(--paper-2);
+  border-radius:12px;padding:14px;cursor:pointer;min-height:48px;
+  transition:border-color .15s,background .15s;box-shadow:var(--shadow);
+}
+.opt:hover{border-color:var(--overlap)}
+.opt input{margin:5px 0 0;accent-color:var(--pink-strong);width:19px;height:19px;flex:none}
+.opt input[type=checkbox]{
+  appearance:none;-webkit-appearance:none;
+  border:1.5px solid var(--line);border-radius:5px;
+  background:var(--paper-2);position:relative;cursor:pointer;
+}
+.opt input[type=checkbox]:checked{background:var(--pink-strong);border-color:var(--pink-strong)}
+.opt input[type=checkbox]:checked::after{
+  content:"";position:absolute;left:6px;top:2px;
+  width:5px;height:10px;
+  border:solid var(--paper);border-width:0 2px 2px 0;
+  transform:rotate(45deg);
+}
+.opt input[type=radio]{
+  appearance:none;-webkit-appearance:none;
+  border:1.5px solid var(--line);border-radius:50%;
+  background:var(--paper-2);position:relative;cursor:pointer;
+}
+.opt input[type=radio]:checked{background:var(--pink-strong);border-color:var(--pink-strong)}
+.opt input[type=radio]:checked::after{
+  content:"";position:absolute;left:50%;top:50%;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--paper);
+  transform:translate(-50%,-50%);
+}
+.opt span{font-size:15.5px;line-height:1.65}
+.opt.on{border-color:var(--pink-strong);background:#fff}
+.opt small{display:block;color:var(--muted);font-size:13px;line-height:1.6;margin-top:2px}
+
+/* factor chips (ordered pick) */
+.factors{display:flex;flex-direction:column;gap:8px}
+.fac{
+  position:relative;display:flex;gap:12px;align-items:flex-start;
+  border:1px solid var(--line);background:var(--paper-2);border-radius:12px;
+  padding:14px;cursor:pointer;transition:.15s;box-shadow:var(--shadow);min-height:48px;
+}
+.fac:hover{border-color:var(--overlap)}
+.fac.on{border-color:var(--blue-strong);background:#fff}
+.fac.dim{opacity:.42}
+.rank{
+  flex:none;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);
+  display:grid;place-items:center;font-family:var(--mono);font-size:12px;color:var(--muted);background:#fff
+}
+.fac.on .rank{background:var(--blue-strong);border-color:var(--blue-strong);color:#fff;font-weight:700}
+.fac b{font-weight:700;font-size:15.5px}
+.fac em{font-style:normal;color:var(--muted);font-size:13.5px;display:block;line-height:1.65;margin-top:1px}
+.order{border:1px dashed var(--line);border-radius:12px;padding:12px 13px;margin-top:14px;background:transparent}
+.order-t{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted);margin-bottom:9px}
+.order-row{display:flex;align-items:center;gap:9px;padding:6px 0;font-size:14.5px}
+.order-row .n{font-family:var(--mono);color:var(--blue-strong);font-weight:700;width:16px;flex:none}
+.order-row .nm{flex:1}
+.arw{border:1px solid var(--line);background:#fff;border-radius:8px;width:36px;height:36px;font-size:14px;cursor:pointer;color:var(--ink)}
+.arw:disabled{opacity:.3;cursor:default}
+
+/* ---------- clip / scale ---------- */
+.clip{
+  border-left:3px solid var(--blue-strong);background:var(--paper-2);
+  padding:16px 16px 15px;border-radius:0 12px 12px 0;margin:0 0 24px;box-shadow:var(--shadow)
+}
+.clip-t{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--blue-strong);margin-bottom:7px}
+.clip p{margin:0;font-size:15.5px;line-height:1.85}
+.scale{margin:0 0 6px}
+.ticks{display:flex;gap:5px}
+.tick{
+  flex:1;border:1px solid var(--line);background:var(--paper-2);border-radius:9px;
+  padding:13px 0;font-family:var(--mono);font-size:13px;cursor:pointer;text-align:center;
+  min-height:44px;transition:.12s;color:var(--ink)
+}
+.tick:hover{border-color:var(--muted)}
+.ticks.pink .tick.on{background:var(--pink-strong);border-color:var(--pink-strong);color:#fff;font-weight:700}
+.ticks.blue .tick.on{background:var(--blue-strong);border-color:var(--blue-strong);color:#fff;font-weight:700}
+.ends{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin-top:6px}
+
+/* signature: riso overprint */
+.over{margin:20px 0 4px;padding:14px 14px 12px;border:1px solid var(--line);border-radius:12px;background:var(--paper-2)}
+.over-t{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--muted);margin-bottom:10px}
+.plate{position:relative;height:34px}
+.layer{position:absolute;top:0;height:15px;border-radius:3px;width:0;transition:width .4s cubic-bezier(.2,.8,.2,1);mix-blend-mode:multiply}
+.layer.p{background:var(--pink-strong);top:0}
+.layer.b{background:var(--blue-strong);top:19px}
+.over-say{font-size:13px;color:var(--overlap);margin-top:9px;line-height:1.65;min-height:1.65em}
+
+/* ---------- text ---------- */
+textarea,input[type=text]{
+  width:100%;border:1px solid var(--line);border-radius:12px;background:var(--paper-2);
+  padding:13px 14px;font-family:inherit;font-size:16px;line-height:1.75;color:var(--ink);
+  resize:vertical;box-shadow:var(--shadow)
+}
+textarea:focus,input[type=text]:focus{outline:2px solid var(--overlap);outline-offset:1px;border-color:transparent;background:#fff}
+textarea{min-height:100px}
+
+/* ---------- buttons ---------- */
+.nav{display:flex;gap:10px;align-items:center;margin-top:30px;padding-top:20px;border-top:1px solid var(--line)}
+button{font-family:inherit}
+.btn{
+  border:none;border-radius:12px;padding:16px 24px;font-size:16px;font-weight:700;
+  background:var(--ink);color:var(--paper);cursor:pointer;flex:1;min-height:52px;transition:.15s
+}
+.btn:hover{background:var(--overlap)}
+.btn.pink{background:var(--pink-strong);color:#fff}
+.btn.pink:hover{background:var(--overlap)}
+.btn-ghost{
+  border:1px solid var(--line);background:transparent;border-radius:12px;
+  padding:16px 16px;font-size:15px;cursor:pointer;color:var(--muted);flex:none;min-height:52px
+}
+.btn-ghost:hover{border-color:var(--ink);color:var(--ink)}
+.linky{background:none;border:none;color:var(--overlap);font-size:13.5px;text-decoration:underline;
+  text-underline-offset:3px;cursor:pointer;padding:6px 0;font-family:inherit}
+.err{color:var(--pink-strong);font-size:14px;margin-top:12px;font-weight:600;min-height:1.2em}
+
+/* ---------- done ---------- */
+.done{padding:52px 0;text-align:center}
+.done .mark{font-size:68px;margin-bottom:14px}
+.done h2{font-family:var(--lat);font-style:italic;font-size:30px;font-weight:400;margin:0 0 12px}
+.done p{color:var(--muted);font-size:15px;line-height:1.85;margin:0 auto;max-width:400px}
+
+/* ---------- admin ---------- */
+.admin{border-top:1px solid var(--line);margin-top:40px;padding-top:20px}
+.admin-panel{border:1px solid var(--blue-strong);border-radius:12px;padding:16px;background:var(--paper-2);margin-top:12px}
+.admin-panel h3{margin:0 0 4px;font-size:15px}
+.admin-panel p{margin:0 0 14px;font-size:13.5px;color:var(--muted);line-height:1.7}
+.admin-row{display:flex;gap:8px;flex-wrap:wrap}
+.count{font-family:var(--mono);font-size:26px;color:var(--blue-strong);font-weight:700}
+.hidden{display:none !important}
+:focus-visible{outline:2px solid var(--overlap);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none !important}}
+
+/* mobile-first base above; scale up gently for tablet / desktop viewers */
+@media (min-width:600px){
+  .wrap{max-width:640px;padding:0 24px 80px}
+  .bar-inner{max-width:640px;padding:0 24px}
+  .bar{margin:0 -24px 24px}
+  .cover{padding:60px 0 8px}
+  h2.sec{font-size:21px}
+  .btn,.btn-ghost{padding:15px 26px;min-height:50px}
+}
+@media (max-width:360px){
+  .tick{padding:10px 0;font-size:12px;min-height:40px}
+  .btn{padding:14px 16px;font-size:15px}
+  .btn-ghost{padding:14px 14px}
+}
+</style>
+</head>
+<body>
+<div class="bar hidden" id="bar">
+  <div class="bar-inner">
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div class="step-n" id="stepn"></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div id="stage"></div>
+</div>
+
+<script src="svt-survey.js"></script>
+</body>
+</html>
