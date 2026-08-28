@@ -39,10 +39,6 @@ function RecordCard({ record, onDeleted }) {
     }
   }
 
-  const opens = [0, 1, 2]
-    .map((i) => record["open" + i])
-    .filter(Boolean);
-
   return (
     <div className={styles.record}>
       <div className={styles.recordHead}>
@@ -56,6 +52,53 @@ function RecordCard({ record, onDeleted }) {
           {busy ? "刪除中…" : "刪除"}
         </button>
       </div>
+
+      {record.sex && (
+        <p>
+          <b>生理性別：</b>
+          {record.sex}
+          {record.sex === "其他" && record.sex_other ? `（${record.sex_other}）` : ""}
+        </p>
+      )}
+      {record.orient && (
+        <p>
+          <b>性取向：</b>
+          {record.orient}
+          {record.orient === "其他" && record.orient_other ? `（${record.orient_other}）` : ""}
+        </p>
+      )}
+      {record.q1 && (
+        <p>
+          <b>是否關注配對詮釋：</b>
+          {record.q1}
+        </p>
+      )}
+      {record.cp_orient?.length > 0 && (
+        <p>
+          <b>關注的角色戀愛性向關係：</b>
+          {record.cp_orient.join(" / ")}
+          {record.cp_orient.includes("其他") && record.cp_orient_other ? `（${record.cp_orient_other}）` : ""}
+        </p>
+      )}
+      {record.q2 && (
+        <p>
+          <b>是否持續關注 KPOP 男性偶像團體：</b>
+          {record.q2}
+        </p>
+      )}
+      {record.q2b?.length > 0 && (
+        <p>
+          <b>主要關注的團體：</b>
+          {record.q2b.join(" / ")}
+          {record.q2b_other ? `（其他：${record.q2b_other}）` : ""}
+        </p>
+      )}
+      {record.q3 && (
+        <p>
+          <b>韓國影視／韓語接觸程度：</b>
+          {record.q3}
+        </p>
+      )}
       {record.cp && (
         <p>
           <b>配對：</b>
@@ -73,24 +116,14 @@ function RecordCard({ record, onDeleted }) {
         <p>
           <b>因素：</b>
           {record.factors.join(" / ")}
+          {record.fac_other ? `（其他：${record.fac_other}）` : ""}
         </p>
       )}
-      {opens.map((t, i) => (
-        <p key={i}>
-          <b>情境{"一二三"[i]}：</b>
-          {t}
-        </p>
-      ))}
-      {record.define && (
+      {record.cross_yn && (
         <p>
-          <b>對官方定義的感受：</b>
-          {record.define}
-        </p>
-      )}
-      {record.cross === "是" && record.cross && (
-        <p>
-          <b>共通特質：</b>
-          {record.cross}
+          <b>是否具有共通特質：</b>
+          {record.cross_yn}
+          {record.cross_yn === "是" && record.cross ? `（${record.cross}）` : ""}
         </p>
       )}
       {record.reject && (
@@ -99,10 +132,42 @@ function RecordCard({ record, onDeleted }) {
           {record.reject}
         </p>
       )}
+      {record.real && (
+        <p>
+          <b>互動安排性對吸引力的影響：</b>
+          {record.real}
+        </p>
+      )}
+      {record.acc && (
+        <p>
+          <b>得知粉絲詮釋後的感受：</b>
+          {record.acc}
+        </p>
+      )}
       {record.why && (
         <p>
           <b>理由：</b>
           {record.why}
+        </p>
+      )}
+      {[0, 1, 2].map((i) => {
+        const amb = record["amb" + i];
+        const day = record["day" + i];
+        const open = record["open" + i];
+        if (!amb && !day && !open) return null;
+        return (
+          <p key={i}>
+            <b>情境{"一二三"[i]}：</b>
+            {amb ? `曖昧 ${amb}／7　` : ""}
+            {day ? `日常 ${day}／7　` : ""}
+            {open}
+          </p>
+        );
+      })}
+      {record.define && (
+        <p>
+          <b>對官方定義的感受：</b>
+          {record.define}
         </p>
       )}
     </div>
